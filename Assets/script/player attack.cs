@@ -7,7 +7,6 @@ public class PlayerAttack : MonoBehaviour
     public float attackRate = 2f;
     public Transform attackPoint;
     public LayerMask enemyLayers;
-
     private float nextAttackTime = 0f;
 
     void Update()
