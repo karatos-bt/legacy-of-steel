@@ -18,14 +18,19 @@ public class test : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.KeypadMinus))
         {
-            BarreDeVie.valeur -= 10;
+            RegenOuPas(-10);
 
         }
         if (Input.GetKeyDown(KeyCode.KeypadPlus))
         {
-            BarreDeVie.valeur += 10;
+            RegenOuPas(10);
 
         }
 
+    }
+
+    public void RegenOuPas(int hp)
+    {
+        BarreDeVie.valeur += hp;
     }
 }

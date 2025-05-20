@@ -1,43 +1,53 @@
-
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 5;
     private int currentHealth;
+    public Slider healthBar; // R√©f√©rence √† la barre de vie
 
-    public Slider healthBar; // RÈfÈrence ‡ la barre de vie
-
-    private PlayerBlock playerBlock; // RÈfÈrence au blocage
+    private PlayerBlock playerBlock; // R√©f√©rence au blocage
+    private Vector3 respawnPoint;
 
     void Start()
     {
         currentHealth = maxHealth;
-
-        playerBlock = GetComponent<PlayerBlock>(); // RÈcupËre le script de blocage
+        playerBlock = GetComponent<PlayerBlock>(); // R√©cup√®re le script de blocage
 
         if (healthBar != null)
         {
             healthBar.maxValue = maxHealth;
             healthBar.value = currentHealth;
         }
+
+        // Position initiale comme point de respawn
+        respawnPoint = transform.position;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadMinus))
+        {
+            TakeDamage(1);
+        }
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
+        {
+            TakeDamage(-1);
+        }
     }
 
     public void TakeDamage(int damage)
     {
-        // VÈrifie si le joueur bloque
         if (playerBlock != null && playerBlock.isBlocking)
         {
-            Debug.Log(" Attaque bloquÈe !");
-            return; // Ne prend pas de dÈg‚ts
+            Debug.Log("Attaque bloqu√©e !");
+            return;
         }
 
-        // Applique les dÈg‚ts normalement
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-
-        Debug.Log(" Le joueur a pris " + damage + " dÈg‚ts.");
+        Debug.Log("Le joueur a pris " + damage + " d√©g√¢ts.");
 
         if (healthBar != null)
         {
@@ -50,9 +60,31 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void Die()
+    private void Die()
     {
-        Debug.Log(" Le joueur est mort !");
-        // Animation ou redirection ‡ prÈvoir ici
+        Debug.Log("Le joueur est mort !");
+        Respawn(); // Respawn instantan√©
+    }
+
+    private void Respawn()
+    {
+        transform.position = respawnPoint;  // Replacer le joueur au point de respawn
+        RestoreFullHealth();                 // R√©tablir sa sant√©
+    }
+
+    public void RestoreFullHealth()
+    {
+        currentHealth = maxHealth;
+        if (healthBar != null)
+        {
+            healthBar.value = currentHealth;
+        }
+        Debug.Log("Sant√© restaur√©e !");
+    }
+
+    public void SetRespawnPoint(Vector3 newPoint)
+    {
+        respawnPoint = newPoint;
+        Debug.Log("Nouveau point de respawn d√©fini !");
     }
 }
