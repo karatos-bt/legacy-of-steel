@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public void Respawn()
     {
         transform.position = checkpointPosition;
-        GetComponent<PlayerHealth>().RestoreFullHealth();  // Correct aussi
+        GetComponent<PlayerHealth>().RestoreFullHealth();  
         Debug.Log("Respawn au checkpoint");
     }
     public void EnableControls(bool state)

@@ -5,15 +5,15 @@ public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 5;
     private int currentHealth;
-    public Slider healthBar; // Référence à la barre de vie
+    public Slider healthBar; 
 
-    private PlayerBlock playerBlock; // Référence au blocage
+    private PlayerBlock playerBlock; 
     private Vector3 respawnPoint;
 
     void Start()
     {
         currentHealth = maxHealth;
-        playerBlock = GetComponent<PlayerBlock>(); // Récupère le script de blocage
+        playerBlock = GetComponent<PlayerBlock>(); 
 
         if (healthBar != null)
         {
@@ -21,7 +21,7 @@ public class PlayerHealth : MonoBehaviour
             healthBar.value = currentHealth;
         }
 
-        // Position initiale comme point de respawn
+        
         respawnPoint = transform.position;
     }
 
@@ -44,7 +44,7 @@ public class PlayerHealth : MonoBehaviour
             Debug.Log("Attaque bloquée !");
             return;
         }
-
+        Debug.Log("TakeDamage appelé avec : " + damage);
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         Debug.Log("Le joueur a pris " + damage + " dégâts.");
@@ -63,13 +63,13 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("Le joueur est mort !");
-        Respawn(); // Respawn instantané
+        Respawn(); 
     }
 
     private void Respawn()
     {
-        transform.position = respawnPoint;  // Replacer le joueur au point de respawn
-        RestoreFullHealth();                 // Rétablir sa santé
+        transform.position = respawnPoint;  
+        RestoreFullHealth();                 
     }
 
     public void RestoreFullHealth()
@@ -87,4 +87,5 @@ public class PlayerHealth : MonoBehaviour
         respawnPoint = newPoint;
         Debug.Log("Nouveau point de respawn défini !");
     }
+
 }

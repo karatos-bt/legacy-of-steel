@@ -13,7 +13,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Time.time >= nextAttackTime)
         {
-            if (Input.GetKeyDown(KeyCode.P)) // Touche d'attaque
+            if (Input.GetKeyDown(KeyCode.P)) 
             {
                 Attack();
                 nextAttackTime = Time.time + 1f / attackRate;
@@ -23,13 +23,9 @@ public class PlayerAttack : MonoBehaviour
 
     void Attack()
     {
-        // Animation ici (si tu en as une)
-        Debug.Log("Attaque !");
-
-        // Détecte les ennemis dans le rayon d'attaque
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
-        // Inflige des dégâts aux ennemis détectés
+       
         foreach (Collider2D enemy in hitEnemies)
         {
             enemy.GetComponent<EnemyHealth>()?.TakeDamage(attackDamage);
@@ -44,4 +40,6 @@ public class PlayerAttack : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
+
+
 }
