@@ -1,37 +1,30 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class BossController : MonoBehaviour
 {
-    public GameObject smashObjectPrefab;
-    public Transform[] smashZones; // 3 zones dans l'inspecteur
-    public float delayBetweenZones = 1.2f;
+    public Transform[] attackZones; // Assign 3 points dans l'inspecteur
+    public GameObject hammerPrefab; // Objet visuel du coup (ex: marteau)
+    public float timeBetweenAttacks = 3f;
+    public float hammerActiveTime = 1f;
 
-    private GameObject smashObjectInstance;
+    private float timer;
 
-    void Start()
+    void Update()
     {
-        // Créer l'objet une seule fois
-        smashObjectInstance = Instantiate(smashObjectPrefab);
-        StartCoroutine(SmashCycle());
+        timer += Time.deltaTime;
+        if (timer >= timeBetweenAttacks)
+        {
+            AttackRandomZone();
+            timer = 0f;
+        }
     }
 
-    IEnumerator SmashCycle()
+    void AttackRandomZone()
     {
-        while (true)
-        {
-            int randomZone = Random.Range(0, smashZones.Length);
-            Transform targetZone = smashZones[randomZone];
+        int randomIndex = Random.Range(0, attackZones.Length);
+        Transform chosenZone = attackZones[randomIndex];
 
-            // Démarre le smash sur une zone aléatoire
-            SmashObject smashScript = smashObjectInstance.GetComponent<SmashObject>();
-            smashScript.StartSmash(targetZone.position);
-
-            // Attendre que le smash soit terminé (descente, pause, remontée)
-            while (!smashScript.IsAvailableForNext)
-                yield return null;
-
-            yield return new WaitForSeconds(delayBetweenZones);
-        }
+        GameObject hammer = Instantiate(hammerPrefab, chosenZone.position, Quaternion.identity);
+        Destroy(hammer, hammerActiveTime);
     }
 }

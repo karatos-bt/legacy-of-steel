@@ -7,10 +7,12 @@ public class EnemyFollow : MonoBehaviour
 
     private Transform player;
     private bool isFacingRight = true;
+    private EnemyAttack enemyAttack; // ✅ ajouté
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        enemyAttack = GetComponent<EnemyAttack>(); // ✅ ajouté
 
         if (player == null)
         {
@@ -20,16 +22,16 @@ public class EnemyFollow : MonoBehaviour
 
     void Update()
     {
-        if (player == null) return;
+        if (player == null || enemyAttack == null) return;
 
         float distance = Vector2.Distance(transform.position, player.position);
         Debug.Log("Distance joueur: " + distance);
 
-        if (distance <= detectionRange)
+        if (distance <= detectionRange && !enemyAttack.IsPlayerInAttackRange) // ✅ on ne bouge que si le joueur n'est pas dans la zone d'attaque
         {
-            //Vector3 direction = (player.position - transform.position).normalized;
-            Vector3 direction = (new Vector3 (player.position.x - transform.position.x, 0, 0)).normalized;
+            Vector3 direction = new Vector3(player.position.x - transform.position.x, 0, 0).normalized;
             transform.position += direction * moveSpeed * Time.deltaTime;
+
             if (direction.x < 0 && !isFacingRight)
             {
                 Flip();
@@ -40,8 +42,6 @@ public class EnemyFollow : MonoBehaviour
             }
         }
     }
-    
-
 
     void Flip()
     {

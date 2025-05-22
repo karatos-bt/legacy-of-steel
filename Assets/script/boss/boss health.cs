@@ -13,7 +13,7 @@ public class BossHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log("🧠 Boss a pris " + damage + " dégâts. Santé restante : " + currentHealth);
+        Debug.Log("Le boss a pris " + damage + " dégâts");
 
         if (currentHealth <= 0)
         {
@@ -21,9 +21,9 @@ public class BossHealth : MonoBehaviour
         }
     }
 
-    private void Die()
+    void Die()
     {
-        Debug.Log("💀 Le boss est mort !");
+        Debug.Log("Le boss est mort !");
         Destroy(gameObject);
     }
 }

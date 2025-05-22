@@ -9,10 +9,13 @@ public class EnemyAttack : MonoBehaviour
     public Transform attackPoint;
 
     private float nextAttackTime = 0f;
+    public bool IsPlayerInAttackRange { get; private set; } // ✅ ajouté
 
     void Update()
     {
         Collider2D player = Physics2D.OverlapCircle(attackPoint.position, attackRange, playerLayer);
+
+        IsPlayerInAttackRange = (player != null); // ✅ ajouté
 
         if (player != null && Time.time >= nextAttackTime)
         {
@@ -29,4 +32,3 @@ public class EnemyAttack : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
-
